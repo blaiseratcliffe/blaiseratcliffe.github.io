@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Blaise Ratcliffe (43273085)" />
+
+<meta name="date" content="2016-03-29" />
+
+<title>STAT540 Assignment</title>
+
+<script src="assignment_files/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="assignment_files/bootstrap-3.3.5/css/united.min.css" rel="stylesheet" />
+<script src="assignment_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="assignment_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="assignment_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="assignment_files/highlight/default.css"
+      type="text/css" />
+<script src="assignment_files/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script src="assignment_files/navigation-1.0/tabsets.js"></script>
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="fluid-row" id="header">
+
+
+<h1 class="title">STAT540 Assignment</h1>
+<h4 class="author"><em>Blaise Ratcliffe (43273085)</em></h4>
+<h4 class="date"><em>March 29, 2016</em></h4>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#question-1-data-inspection">Question 1: Data inspection</a><ul>
+<li><a href="#download-and-inspect-the-data-1-point">1.1 Download and inspect the data (1 point)</a></li>
+<li><a href="#basic-data-manipulation-1-point">1.2 Basic data manipulation (1 point)</a></li>
+<li><a href="#basic-graphing-1-point">1.3 Basic graphing (1 point)</a></li>
+</ul></li>
+<li><a href="#question-2-assessing-data-quality">Question 2: Assessing data quality</a><ul>
+<li><a href="#examine-the-sample-to-sample-correlations-in-a-heatmap-2-points">2.1 Examine the sample-to-sample correlations in a heatmap (2 points)</a></li>
+<li><a href="#assess-the-presence-of-outlier-samples-1-point">2.2 Assess the presence of outlier samples (1 point)</a></li>
+</ul></li>
+<li><a href="#question-3-differential-expression-with-respect-to-treatment">Question 3: Differential expression with respect to treatment</a><ul>
+<li><a href="#linear-model-1-point">3.1 Linear model (1 point)</a></li>
+<li><a href="#look-at-the-hits-1-point">3.2 Look at the hits (1 point)</a></li>
+</ul></li>
+<li><a href="#question-4-differential-expression-with-respect-to-time">Question 4: Differential expression with respect to time</a><ul>
+<li><a href="#linear-model-1-point-1">4.1 Linear model (1 point)</a></li>
+</ul></li>
+<li><a href="#question-5-differential-expression-analysis-with-a-full-model">Question 5: Differential expression analysis with a full model</a><ul>
+<li><a href="#quantify-the-number-of-hits-for-treatment-2-point">5.1 Quantify the number of hits for treatment (2 point)</a></li>
+<li><a href="#test-the-null-hypothesis-1-point">5.2 Test the null hypothesis (1 point)</a></li>
+<li><a href="#plot-a-few-probes-where-the-interaction-does-and-does-not-matter-2-point">5.3 Plot a few probes where the interaction does and does not matter (2 point)</a></li>
+</ul></li>
+<li><a href="#question-6-microarray-analysis">Question 6: Microarray analysis</a><ul>
+<li><a href="#data-loading-and-qc-2-points">6.1 Data loading and QC (2 points)</a></li>
+<li><a href="#microarray-dea-2-points">6.2 Microarray DEA (2 points)</a></li>
+<li><a href="#microarray-dea-continue-1-point">6.3 Microarray DEA continue (1 point)</a></li>
+</ul></li>
+<li><a href="#question-7-rna-seq-analysis">Question 7: RNA-seq analysis</a><ul>
+<li><a href="#load-rna-count-data-and-sanity-check-1-point">7.1 Load RNA Count Data and Sanity Check (1 point)</a></li>
+<li><a href="#dea-of-deep-sequencing-data-1-point">7.2 DEA of deep sequencing data (1 point)</a></li>
+<li><a href="#dea-of-low-sequencing-data-1-point">7.3 DEA of low sequencing data (1 point)</a></li>
+<li><a href="#deep-vs-low-sequencing-1-point">7.4 Deep vs low sequencing (1 point)</a></li>
+</ul></li>
+<li><a href="#question-8-compare-dea-results-from-rna-seq-and-arrays">Question 8: Compare DEA results from RNA-Seq and arrays</a><ul>
+<li><a href="#plots-of-interesting-and-boring-genes-2-point">8.1 Plots of interesting and boring genes (2 point)</a></li>
+</ul></li>
+</ul>
+</div>
+
+<hr />
+<pre class="r"><code>#Load libraries
+library(ggplot2); library(plyr); library(reshape2); library(limma); library(edgeR); library(RColorBrewer); library(yeast2.db); library(VennDiagram)</code></pre>
+<pre class="r"><code>#setwd
+setwd(&#39;c:/users/blaise/desktop/assignment/&#39;)</code></pre>
+<pre class="r"><code>#Set common color gradient for heatmaps
+jBuPuFun &lt;- colorRampPalette(brewer.pal(n = 9, &quot;BuPu&quot;))
+paletteSize &lt;- 256
+jBuPuPalette &lt;- jBuPuFun(paletteSize)</code></pre>
+<hr />
+<div id="question-1-data-inspection" class="section level1">
+<h1>Question 1: Data inspection</h1>
+<div id="download-and-inspect-the-data-1-point" class="section level2">
+<h2>1.1 Download and inspect the data (1 point)</h2>
+<pre class="r"><code>data &lt;- read.delim(gzfile(&quot;NHBE_transcriptome_data.txt.gz&quot;), stringsAsFactors = FALSE)
+NHBE_design &lt;- read.delim(&quot;NHBE_design.txt&quot;, stringsAsFactors = FALSE)</code></pre>
+<div id="how-many-genes-are-in-our-data" class="section level5">
+<h5>How many genes are in our data?</h5>
+<pre class="r"><code>dim(data)</code></pre>
+<pre><code>## [1] 22737    23</code></pre>
+<pre class="r"><code>data[1:5,1:3]</code></pre>
+<pre><code>##         GSE10718_Biomat_1 GSE10718_Biomat_10 GSE10718_Biomat_11
+## 1294_at          7.900022           7.623666           8.224398
+## 1316_at          6.126008           5.846865           6.299318
+## 1320_at          6.822491           7.616309           7.217153
+## 1431_at          6.633596           5.698143           6.221293
+## 1438_at          6.948795           7.509875           7.291645</code></pre>
+<ul>
+<li>22,737 genes(probes)</li>
+</ul>
+</div>
+<div id="how-many-samples" class="section level5">
+<h5>How many samples?</h5>
+<pre class="r"><code>dim(NHBE_design)</code></pre>
+<pre><code>## [1] 23  3</code></pre>
+<pre class="r"><code>head(NHBE_design)</code></pre>
+<pre><code>##                    ExternalID Treatment time
+## GSE10718_Biomat_1   GSM270883   control 24_h
+## GSE10718_Biomat_10  GSM270874   control  1_h
+## GSE10718_Biomat_11  GSM270873   control  1_h
+## GSE10718_Biomat_12  GSM270872   control  1_h
+## GSE10718_Biomat_13  GSM270881   control  4_h
+## GSE10718_Biomat_14  GSM270880   control  4_h</code></pre>
+<pre class="r"><code>table(factor(NHBE_design$Treatment))</code></pre>
+<pre><code>## 
+## cigarette_smoke         control 
+##              11              12</code></pre>
+<ul>
+<li>23 samples total</li>
+<li>~3 reps/treatment</li>
+<li>2 treatments: smoke, control</li>
+</ul>
+</div>
+<div id="check-the-breakdown-for-treatment-and-time.-do-you-think-its-a-good-experiment-design-hint-table-and-addmargins-will-help." class="section level5">
+<h5>Check the breakdown for treatment and time. Do you think it’s a good experiment design? Hint: table() and addmargins() will help.</h5>
+<pre class="r"><code>table(NHBE_design$Treatment,NHBE_design$time)</code></pre>
+<pre><code>##                  
+##                   1_h 2_h 24_h 4_h
+##   cigarette_smoke   2   3    3   3
+##   control           3   3    3   3</code></pre>
+<ul>
+<li>Comments: Design looks balanced, but sample sizes seems small. Maybe the design could use an additional measurement at a time between 4 and 24 hours.</li>
+</ul>
+</div>
+</div>
+<div id="basic-data-manipulation-1-point" class="section level2">
+<h2>1.2 Basic data manipulation (1 point)</h2>
+<div id="create-a-new-variable-which-is-a-numeric-version-of-time" class="section level5">
+<h5>Create a new variable which is a numeric version of time</h5>
+<pre class="r"><code>NHBE_design$time_num&lt;-as.numeric(gsub(&quot;([0-9]*).*&quot;,&quot;\\1&quot;,NHBE_design[,3]))
+
+#Create more informative sample IDs
+all.equal(colnames(data),rownames(NHBE_design))</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>NHBE_design$Treatment[which(NHBE_design$Treatment==&quot;cigarette_smoke&quot;)]&lt;-&quot;cs&quot;
+NHBE_design$Treatment[which(NHBE_design$Treatment==&quot;control&quot;)]&lt;-&quot;c&quot;
+NHBE_design$ExternalID&lt;-paste(&quot;S&quot;,substring(rownames(NHBE_design),17),NHBE_design$Treatment,NHBE_design$time_num,sep=&quot;_&quot;)
+rownames(NHBE_design)&lt;-NHBE_design$ExternalID
+colnames(data)&lt;-NHBE_design$ExternalID</code></pre>
+</div>
+</div>
+<div id="basic-graphing-1-point" class="section level2">
+<h2>1.3 Basic graphing (1 point)</h2>
+<div id="create-a-plot-showing-the-gene-expression-data-for-a-random-probe-and-the-averages-for-all-possible-combinations-of-agent-and-time" class="section level5">
+<h5>Create a plot showing the gene expression data for a random probe and the averages for all possible combinations of agent and time</h5>
+<pre class="r"><code>#Make temporary data frame for graphing
+temp&lt;-data.frame(Time=factor(NHBE_design$time_num),Treatment=factor(NHBE_design$Treatment),Exp=as.numeric(t(data[1,])))
+rownames(temp)&lt;-rownames(NHBE_design)
+
+#Plot mean expression/group
+ggplot(temp, 
+  aes(x=Time, y=Exp, fill=Treatment))+
+  geom_boxplot()+
+  labs(x=&quot;Time (hours)&quot;,y=&quot;Expression level (log2)&quot;,title=&quot;Random probe: Expression vs time&quot;)+
+  theme(axis.text.x=element_text(angle=-90, vjust=0.4,hjust=1))</code></pre>
+<p><img src="Figs/unnamed-chunk-9-1.png" title="" alt="" width="672" /></p>
+<pre class="r"><code>#Same as above but faceted
+ggplot(temp, 
+  aes(x=Time, y=Exp,fill=Treatment))+
+  geom_boxplot()+
+  facet_grid(.~Treatment)+
+  labs(x=&quot;Time (hours)&quot;,y=&quot;Expression level (log2)&quot;,title=&quot;Random probe: Expression vs time&quot;)+
+  theme(axis.text.x=element_text(angle=-90, vjust=0.4,hjust=1))+ 
+  theme(legend.position=&quot;none&quot;)</code></pre>
+<p><img src="Figs/unnamed-chunk-9-2.png" title="" alt="" width="672" /></p>
+<hr />
+</div>
+</div>
+</div>
+<div id="question-2-assessing-data-quality" class="section level1">
+<h1>Question 2: Assessing data quality</h1>
+<div id="examine-the-sample-to-sample-correlations-in-a-heatmap-2-points" class="section level2">
+<h2>2.1 Examine the sample-to-sample correlations in a heatmap (2 points)</h2>
+<div id="order-the-samples-by-time-within-each-time-group-sort-on-the-other-factor-i.e.-agent-treatment." class="section level5">
+<h5>Order the samples by time; within each time group, sort on the other factor, i.e., agent (treatment).</h5>
+<pre class="r"><code>#Order temporary graphing data frame by Time(Treatment)
+temp&lt;-temp[with(temp, order(Time, Treatment)), ]
+
+#Order intensity data frame based on order of temporary graphing data frame
+data&lt;-data[as.character(rownames(temp))]
+
+#Check ordering was successful 
+all.equal(colnames(data),rownames(temp))</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>#Plot correlation matrix heatmap Time(Treatment)
+ggplot(melt(cor(data)), aes(x=Var1,y=Var2, z= value)) + 
+  geom_tile(aes(fill= value)) + 
+  theme_bw() + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(x=&quot;&quot;,y=&quot;&quot;,title=&quot;Sort: Time(Treatment)&quot;)+
+  scale_fill_gradient2(low = jBuPuPalette[1],
+                       mid = jBuPuPalette[paletteSize/2],
+                       high = jBuPuPalette[paletteSize],
+                       midpoint = (max(melt(cor(data))[3]) +
+                                     min(melt(cor(data))[3])) / 2,
+                       name = &quot;Pearson correlation&quot;)</code></pre>
+<p><img src="Figs/unnamed-chunk-10-1.png" title="" alt="" width="672" /></p>
+</div>
+<div id="order-the-samples-by-agent-and-within-each-agent-group-sort-by-time." class="section level5">
+<h5>Order the samples by agent; and within each agent group, sort by time.</h5>
+<pre class="r"><code>#Order temporary graphing data frame by Treatment(Time)
+temp&lt;-temp[with(temp, order(Treatment, Time)), ]
+
+#Order intensity data frame based on order of temporary graphing data frame
+data&lt;-data[as.character(rownames(temp))]
+
+#Check ordering was successful 
+all.equal(colnames(data),rownames(temp))</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>#Plot correlation matrix heatmap Treatment(Time)
+ggplot(melt(cor(data)), aes(x=Var1,y=Var2, z= value)) + 
+  geom_tile(aes(fill= value)) + 
+  theme_bw() + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))+
+  labs(x=&quot;&quot;,y=&quot;&quot;,title=&quot;Sort: Treatment(Time)&quot;)+
+  scale_fill_gradient2(low = jBuPuPalette[1],
+                       mid = jBuPuPalette[paletteSize/2],
+                       high = jBuPuPalette[paletteSize],
+                       midpoint = (max(melt(cor(data))[3]) +
+                                     min(melt(cor(data))[3])) / 2,
+                       name = &quot;Pearson correlation&quot;)</code></pre>
+<p><img src="Figs/unnamed-chunk-11-1.png" title="" alt="" width="672" /></p>
+</div>
+<div id="what-does-the-sample-correlation-matrix-tell-us-about-the-overall-impact-of-time-and-agent" class="section level5">
+<h5>What does the sample correlation matrix tell us about the overall impact of time and agent?</h5>
+<ul>
+<li>The agent (cs) appears to have an effect on gene expression.</li>
+<li>The effect of the agent appears to effect expression more at time &gt;1 hour.</li>
+</ul>
+</div>
+</div>
+<div id="assess-the-presence-of-outlier-samples-1-point" class="section level2">
+<h2>2.2 Assess the presence of outlier samples (1 point)</h2>
+<div id="comment-on-the-potential-presence-of-outliers-if-any-based-on-the-sample-correlation-matrices-created-in-q2a." class="section level5">
+<h5>Comment on the potential presence of outliers (if any) based on the sample correlation matrices created in Q2a.</h5>
+<ul>
+<li>Sample10(S_10_c_1) and Sample9(S_9_c_2) appear to have low correlations with all other samples.</li>
+</ul>
+</div>
+<div id="try-to-go-beyond-merely-eyeballing-and-make-a-quantitative-statement-about-presence-of-an-outlier" class="section level5">
+<h5>Try to go beyond merely eyeballing??, and make a quantitative statement about presence of an outlier:</h5>
+</div>
+<div id="e.g.-quantify-for-each-sample-whether-it-sticks-out-compared-to-the-other-samples." class="section level5">
+<h5>e.g., quantify for each sample, whether it “sticks out” compared to the other samples.</h5>
+<pre class="r"><code>#Calculate Euclidian distance between the samples
+#Temporary distance matrix
+temp1&lt;-t(data)
+temp2&lt;-as.matrix(dist(temp1, method = &quot;euclidean&quot;))
+#Quick check of average distance for each sample
+colMeans(temp2)</code></pre>
+<pre><code>##  S_10_c_1  S_11_c_1  S_12_c_1   S_7_c_2   S_8_c_2   S_9_c_2  S_13_c_4  S_14_c_4  S_15_c_4  S_1_c_24  S_2_c_24  S_3_c_24 S_16_cs_1 S_17_cs_1 S_19_cs_2 
+##  170.1721  158.8795  160.8479  159.8353  157.9066  162.8904  153.0444  153.9397  150.2830  156.0071  157.7125  154.5292  151.5451  152.8652  155.0173 
+## S_20_cs_2 S_21_cs_2 S_22_cs_4 S_23_cs_4 S_24_cs_4 S_4_cs_24 S_5_cs_24 S_6_cs_24 
+##  159.3513  163.9157  160.7589  165.5442  163.7097  164.1808  163.1365  153.1396</code></pre>
+<ul>
+<li>The mean distance of sample S_10_c_1 is the highest of all samples (170.1721). Sample S_9_c_2 seems OK though.</li>
+</ul>
+</div>
+<div id="if-any-sample-does-stick-out-from-the-previous-step-examine-it-in-the-context-of-its-experimental-group" class="section level5">
+<h5>If any sample does “stick out” from the previous step, examine it in the context of its experimental group</h5>
+</div>
+<div id="e.g.-given-a-sample-that-is-least-similar-to-all-other-samples-does-it-correlate-with-samples-treated-with-same-agent-better-than-other-samples-treated-with-a-different-agent" class="section level5">
+<h5>(e.g., given a sample that is least similar to all other samples: does it correlate with samples treated with same agent better than other samples treated with a different agent?)</h5>
+<ul>
+<li>Look and compare S_10_c_1</li>
+</ul>
+<pre class="r"><code>#Overall mean distance within control group
+mean(colMeans(temp2[c(1:12),c(1:12)]))</code></pre>
+<pre><code>## [1] 148.8304</code></pre>
+<pre class="r"><code>#Mean distances of control samples
+colMeans(temp2[c(1:12),c(1:12)])</code></pre>
+<pre><code>## S_10_c_1 S_11_c_1 S_12_c_1  S_7_c_2  S_8_c_2  S_9_c_2 S_13_c_4 S_14_c_4 S_15_c_4 S_1_c_24 S_2_c_24 S_3_c_24 
+## 160.0334 149.8574 151.9953 150.5203 148.4421 153.2928 144.8794 144.7599 141.1322 147.1878 148.4166 145.4474</code></pre>
+<ul>
+<li>The mean distance of sample S_10_c_1 is much higher than the mean distances of other samples within the control group.</li>
+</ul>
+<pre class="r"><code>#Check mean distance of control samples with &#39;cs&#39; treatment samples
+colMeans(temp2[c(13:nrow(temp2)),c(1:12)])</code></pre>
+<pre><code>## S_10_c_1 S_11_c_1 S_12_c_1  S_7_c_2  S_8_c_2  S_9_c_2 S_13_c_4 S_14_c_4 S_15_c_4 S_1_c_24 S_2_c_24 S_3_c_24 
+## 181.2324 168.7219 170.5052 169.9971 168.2315 173.3604 161.9516 163.9542 160.2657 165.6282 167.8535 164.4366</code></pre>
+<ul>
+<li>The mean distance of sample S_10_c_1 to the ‘cs’ treatment group is much higher than the other samples within the control group.</li>
+</ul>
+<hr />
+</div>
+</div>
+</div>
+<div id="question-3-differential-expression-with-respect-to-treatment" class="section level1">
+<h1>Question 3: Differential expression with respect to treatment</h1>
+<div id="linear-model-1-point" class="section level2">
+<h2>3.1 Linear model (1 point)</h2>
+<div id="fit-a-linear-model-modeling-expression-level-of-each-probe-using-treatment-as-a-single-covariate.-hint-lecture-10-on-limma" class="section level5">
+<h5>Fit a linear model, modeling expression level of each probe using treatment as a single covariate. (Hint: Lecture 10 on limma)</h5>
+<pre class="r"><code>#Sort data frames to be in same order 
+data&lt;-data[as.character(rownames(NHBE_design))]
+
+#Check ordering
+all.equal(colnames(data),rownames(NHBE_design))</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>#Create design matrix
+trtDesMat &lt;- model.matrix(~ Treatment, NHBE_design)
+
+trtDesMat</code></pre>
+<pre><code>##           (Intercept) Treatmentcs
+## S_1_c_24            1           0
+## S_10_c_1            1           0
+## S_11_c_1            1           0
+## S_12_c_1            1           0
+## S_13_c_4            1           0
+## S_14_c_4            1           0
+## S_15_c_4            1           0
+## S_16_cs_1           1           1
+## S_17_cs_1           1           1
+## S_19_cs_2           1           1
+## S_2_c_24            1           0
+## S_20_cs_2           1           1
+## S_21_cs_2           1           1
+## S_22_cs_4           1           1
+## S_23_cs_4           1           1
+## S_24_cs_4           1           1
+## S_3_c_24            1           0
+## S_4_cs_24           1           1
+## S_5_cs_24           1           1
+## S_6_cs_24           1           1
+## S_7_c_2             1           0
+## S_8_c_2             1           0
+## S_9_c_2             1           0
+## attr(,&quot;assign&quot;)
+## [1] 0 1
+## attr(,&quot;contrasts&quot;)
+## attr(,&quot;contrasts&quot;)$Treatment
+## [1] &quot;contr.treatment&quot;</code></pre>
+<pre class="r"><code>#Fit models, and use eBayes() to moderate the estimated error variances
+trtFit &lt;- lmFit(data, trtDesMat)
+trtEbFit &lt;- eBayes(trtFit)</code></pre>
+</div>
+<div id="write-out-in-english-and-as-an-equation-the-model-you-are-using-to-assess-differential-expression." class="section level5">
+<h5>Write out in English and as an equation the model you are using to assess differential expression.</h5>
+<ul>
+<li>Yg=Xg+ag+eg</li>
+<li>Where, Yg is the expression of the ith gene…</li>
+</ul>
+</div>
+<div id="in-the-context-of-that-model-what-statistical-test-are-you-performing" class="section level5">
+<h5>In the context of that model, what statistical test are you performing?</h5>
+<ul>
+<li>We are using a t-test since we have 2 treatment groups (c vs cs)</li>
+</ul>
+</div>
+</div>
+<div id="look-at-the-hits-1-point" class="section level2">
+<h2>3.2 Look at the hits (1 point)</h2>
+<pre class="r"><code>#Model effects
+colnames(coef(trtEbFit))</code></pre>
+<pre><code>## [1] &quot;(Intercept)&quot; &quot;Treatmentcs&quot;</code></pre>
+<pre class="r"><code>#Top 10 hits
+topTable(trtEbFit)</code></pre>
+<pre><code>##                 logFC   AveExpr        t      P.Value    adj.P.Val        B
+## 200779_at   0.7613410 13.983184 8.577428 1.419183e-08 0.0001750755 9.623149
+## 202912_at   1.7199499 12.764302 8.161121 3.365296e-08 0.0001750755 8.840436
+## 214696_at   1.9074941 11.730937 8.155234 3.407195e-08 0.0001750755 8.829176
+## 223394_at   1.2644771 10.909886 8.147206 3.465212e-08 0.0001750755 8.813808
+## 223774_at   1.1696606  9.529931 8.080341 3.989741e-08 0.0001750755 8.685431
+## 209020_at   1.0223766 10.677979 7.939997 5.373691e-08 0.0001750755 8.413709
+## 202672_s_at 3.5302487  9.716310 7.904577 5.795528e-08 0.0001750755 8.344646
+## 220468_at   2.4132680  6.488711 7.876047 6.160022e-08 0.0001750755 8.288875
+## 223982_s_at 0.9256205 10.907060 7.729633 8.438527e-08 0.0001933190 8.000666
+## 226924_at   0.6366539  9.588851 7.726141 8.502396e-08 0.0001933190 7.993752</code></pre>
+<pre class="r"><code>#Extract hits
+dsHits &lt;- topTable(trtEbFit,number=Inf,coef = grep(&quot;Treatment&quot;, colnames(coef(trtEbFit))))</code></pre>
+<div id="how-many-hits-probes-are-associated-with-treatment-at-unadjusted-p-value-1e-3" class="section level5">
+<h5>How many hits (probes) are associated with treatment at unadjusted p-value 1e-3?</h5>
+<pre class="r"><code>length(which(dsHits$P.Value&lt;1e-3))</code></pre>
+<pre><code>## [1] 805</code></pre>
+<ul>
+<li>805 hits are associated with treatment at unadjusted p-value of 1e-3.</li>
+</ul>
+</div>
+<div id="how-may-are-associated-with-treatment-at-fdr-0.05" class="section level5">
+<h5>How may are associated with treatment at FDR 0.05?</h5>
+<pre class="r"><code>length(which(dsHits$adj.P.Val&lt;0.05))</code></pre>
+<pre><code>## [1] 1238</code></pre>
+<ul>
+<li>1238 hits are associated with treatment at FDR 0.05.</li>
+</ul>
+</div>
+<div id="take-the-top-50-probes-as-your-hits-and-create-a-heatmap-of-their-expression-levels.-sort-the-hits-by-p-values-and-the-samples-by-treatment." class="section level5">
+<h5>Take the top 50 probes as your “hits” and create a heatmap of their expression levels. Sort the hits by p-values and the samples by treatment.</h5>
+<pre class="r"><code>#Top 50 hits
+dsHits50 &lt;- topTable(trtEbFit,number=50,coef = grep(&quot;Treatment&quot;, colnames(coef(trtEbFit))),sort.by = &quot;P&quot;)
+
+#Top 50 hits probe data
+dataHits50&lt;-data[which(rownames(data)%in%as.character(rownames(dsHits50))),]
+
+#Order samples by Treatment(Time)
+NHBE_design&lt;-NHBE_design[order(NHBE_design$Treatment,NHBE_design$time_num),]
+dataHits50&lt;-dataHits50[as.character(rownames(NHBE_design))]
+
+#Check order
+all.equal(colnames(dataHits50),rownames(NHBE_design))</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>#Order and check
+dsHits50 &lt;- dsHits50[order(dsHits50$P.Value),] 
+dataHits50&lt;-dataHits50[match(rownames(dsHits50), rownames(dataHits50)),]
+all.equal(rownames(dataHits50),rownames(dsHits50))</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>#Format data as repeated observations 
+dataHits50Tall &lt;- data.frame(Sample = rep(colnames(dataHits50), each = nrow(dataHits50)),
+                          Probe = rownames(dataHits50),
+                          Expression = unlist(dataHits50))
+
+#Reorder factor levels
+dataHits50Tall$Sample&lt;-factor(dataHits50Tall$Sample,levels=unique(dataHits50Tall$Sample))
+dataHits50Tall$Probe&lt;-factor(dataHits50Tall$Probe,levels=unique(dataHits50Tall$Probe))
+
+#Plot heatmap of expression levels
+ggplot(dataHits50Tall, aes(x = Probe, y = Sample, fill = Expression)) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
+  geom_tile() +
+  scale_fill_gradient2(low = jBuPuPalette[1],
+                       mid = jBuPuPalette[paletteSize/2],
+                       high = jBuPuPalette[paletteSize],
+                       midpoint = (max(dataHits50Tall$Expression) +
+                       min(dataHits50Tall$Expression)) / 2,
+                       name = &quot;Expression&quot;)</code></pre>
+<p><img src="Figs/unnamed-chunk-19-1.png" title="" alt="" width="672" /></p>
+</div>
+<div id="what-is-the-estimated-false-discovery-rate-of-this-hits-list" class="section level5">
+<h5>What is the (estimated) false discovery rate of this “hits” list?</h5>
+<pre class="r"><code>mean(dsHits50$adj.P.Val)</code></pre>
+<pre><code>## [1] 0.0005095663</code></pre>
+<ul>
+<li>The estimated FDR is 0.0005095663.</li>
+</ul>
+</div>
+<div id="how-many-of-these-hits-do-we-expect-to-be-false-discoveries" class="section level5">
+<h5>How many of these hits do we expect to be false discoveries?</h5>
+<pre class="r"><code>mean(dsHits50$adj.P.Val)*nrow(dsHits50) </code></pre>
+<pre><code>## [1] 0.02547832</code></pre>
+<ul>
+<li>We expect less than one (0.02547832) of the hits to be a false positive.</li>
+</ul>
+<hr />
+</div>
+</div>
+</div>
+<div id="question-4-differential-expression-with-respect-to-time" class="section level1">
+<h1>Question 4: Differential expression with respect to time</h1>
+<div id="for-this-question-time-is-treated-as-a-quantitative-covariate-unit-hours." class="section level3">
+<h3>For this question, time is treated as a quantitative covariate (unit: hours).</h3>
+</div>
+<div id="linear-model-1-point-1" class="section level2">
+<h2>4.1 Linear model (1 point)</h2>
+<div id="fit-a-linear-model-for-assessing-the-effect-of-time-on-gene-expression" class="section level5">
+<h5>Fit a linear model for assessing the effect of time on gene expression</h5>
+<pre class="r"><code>tmDesMat &lt;- model.matrix(~ time_num, NHBE_design)
+
+data&lt;-data[as.character(rownames(NHBE_design))]
+all.equal(colnames(data),rownames(NHBE_design))</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>tmFit &lt;- lmFit(data, tmDesMat)
+tmEbFit &lt;- eBayes(tmFit)
+
+#Look at hits
+colnames(coef(tmEbFit))</code></pre>
+<pre><code>## [1] &quot;(Intercept)&quot; &quot;time_num&quot;</code></pre>
+<pre class="r"><code>topTable(tmEbFit)</code></pre>
+<pre><code>##                   logFC   AveExpr          t      P.Value    adj.P.Val        B
+## 202586_at   -0.04321190  9.045753 -11.559699 5.595299e-11 1.272203e-06 15.28331
+## 203201_at   -0.04242793 10.057592 -10.121063 7.109181e-10 6.663751e-06 12.74567
+## 227559_at   -0.05501598  8.182478  -9.958972 9.609875e-10 6.663751e-06 12.44384
+## 202769_at    0.04317888 12.095002   9.769107 1.373425e-09 6.663751e-06 12.08602
+## 226775_at   -0.03828553  8.647287  -9.734894 1.465398e-09 6.663751e-06 12.02105
+## 213113_s_at -0.04650788 10.391574  -9.412004 2.721027e-09 1.031133e-05 11.40035
+## 202770_s_at  0.03591883 11.510308   9.272069 3.572582e-09 1.160426e-05 11.12709
+## 226226_at    0.04323136  9.561381   9.139895 4.630899e-09 1.316159e-05 10.86660
+## 202887_s_at  0.04197944 13.601392   8.972788 6.449452e-09 1.629347e-05 10.53391
+## 200810_s_at -0.03436033 11.350772  -8.828058 8.617559e-09 1.674623e-05 10.24274</code></pre>
+<pre class="r"><code>#Extract hits
+dsHits2 &lt;- topTable(tmEbFit,number=Inf,coef = grep(&quot;time_num&quot;, colnames(coef(tmEbFit))))</code></pre>
+</div>
+<div id="how-many-hits-are-associated-with-time-at-unadjusted-p-value-1e-3" class="section level5">
+<h5>How many hits are associated with time at unadjusted p-value 1e-3?</h5>
+<pre class="r"><code>length(which(dsHits2$P.Value&lt;1e-3))</code></pre>
+<pre><code>## [1] 958</code></pre>
+<ul>
+<li>958 hits are associated with time at unadjusted p-value 1e-3.</li>
+</ul>
+</div>
+<div id="at-fdr-0.05" class="section level5">
+<h5>At FDR 0.05?</h5>
+<pre class="r"><code>length(which(dsHits2$adj.P.Val&lt;0.05))</code></pre>
+<pre><code>## [1] 1451</code></pre>
+<ul>
+<li>1451 hits are associated with time at FDR 0.05.</li>
+</ul>
+<hr />
+</div>
+</div>
+</div>
+<div id="question-5-differential-expression-analysis-with-a-full-model" class="section level1">
+<h1>Question 5: Differential expression analysis with a full model</h1>
+<div id="like-question-4-treat-time-as-a-quantitative-variable-in-this-question.-were-using-both-treatment-and-time-as-covariates-in-the-full-model." class="section level3">
+<h3>Like question 4, treat time as a quantitative variable in this question. We’re using both treatment and time as covariates in the full model.</h3>
+<div id="fit-the-model" class="section level5">
+<h5>Fit the model</h5>
+<pre class="r"><code>#Design matrix
+allDesMat &lt;- model.matrix(~ Treatment + time_num + Treatment * time_num, NHBE_design)
+
+#Order and check
+data&lt;-data[as.character(rownames(NHBE_design))]
+all.equal(colnames(data),rownames(NHBE_design))</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>#Fit model
+allFit &lt;- lmFit(data, allDesMat)
+allEbFit &lt;- eBayes(allFit)</code></pre>
+</div>
+</div>
+<div id="quantify-the-number-of-hits-for-treatment-2-point" class="section level2">
+<h2>5.1 Quantify the number of hits for treatment (2 point)</h2>
+<pre class="r"><code>#Look at hits
+colnames(coef(allEbFit))</code></pre>
+<pre><code>## [1] &quot;(Intercept)&quot;          &quot;Treatmentcs&quot;          &quot;time_num&quot;             &quot;Treatmentcs:time_num&quot;</code></pre>
+<pre class="r"><code>#Extract treatment hits
+dsHitsTrt&lt;-topTable(allEbFit, number=Inf, coef = 2, adjust.method = &quot;BH&quot;)</code></pre>
+<div id="for-how-many-probes-is-treatment-a-significant-factor-at-the-unadjusted-p-value-1e-3" class="section level5">
+<h5>For how many probes is treatment a significant factor at the unadjusted p-value 1e-3?</h5>
+<pre class="r"><code>length(which(dsHitsTrt$P.Value&lt;0.001))</code></pre>
+<pre><code>## [1] 621</code></pre>
+<ul>
+<li>For 621 probes, treatment is a significant factor at the unadjusted p-value 1e-3.</li>
+</ul>
+</div>
+<div id="at-fdr-0.05-1" class="section level5">
+<h5>At FDR 0.05?</h5>
+<pre class="r"><code>length(which(dsHitsTrt$adj.P.Val&lt;0.05))</code></pre>
+<pre><code>## [1] 768</code></pre>
+<ul>
+<li>For 768 probes, treatment is a significant factor at FDR 0.05.</li>
+</ul>
+</div>
+<div id="is-this-number-different-from-what-you-reported-in-3.2-why" class="section level5">
+<h5>Is this number different from what you reported in 3.2? Why?</h5>
+<ul>
+<li>Yes, the number is different. We are adding additional effects to the model so the results will differ.</li>
+</ul>
+</div>
+<div id="quantify-the-proportion-of-overlapping-probes-among-your-hits-when-using-the-unadjusted-p-value-threshold-of-1e-3." class="section level5">
+<h5>Quantify the proportion of overlapping probes among your hits, when using the unadjusted p-value threshold of 1e-3.</h5>
+<pre class="r"><code>#Number of shared hits
+length(intersect(rownames(dsHitsTrt[which(dsHitsTrt$P.Value&lt;0.001),]),rownames(dsHits[which(dsHits$P.Value&lt;0.001),])))</code></pre>
+<pre><code>## [1] 328</code></pre>
+<pre class="r"><code>#Proportion of shared hits
+length(rownames(dsHitsTrt[which(dsHitsTrt$P.Value&lt;0.001),]))/length(rownames(dsHits[which(dsHits$P.Value&lt;0.001),]))</code></pre>
+<pre><code>## [1] 0.7714286</code></pre>
+<ul>
+<li>The proportion of overlapping probes is 0.7714286.</li>
+</ul>
+</div>
+<div id="plot-the-distributions-of-all-the-p-values-for-treatment-when-using-both-models" class="section level5">
+<h5>Plot the distributions of all the p-values for treatment when using both models,</h5>
+</div>
+<div id="i.e.-one-from-the-model-in-q3-and-one-from-the-full-model-in-this-question.-compare-and-comment-on-the-similaritydifferences" class="section level5">
+<h5>i.e., one from the model in Q3 and one from the full model in this question. Compare and comment on the similarity/differences</h5>
+</div>
+<div id="in-the-shape-of-the-distributions." class="section level5">
+<h5>in the shape of the distributions.</h5>
+<pre class="r"><code>#Create hist objects with relative frequency so that the distributions can be compared better
+h1&lt;-hist(dsHitsTrt$P.Value,breaks=50, plot=F)
+h1$counts &lt;- h1$counts / sum(h1$counts)
+h2&lt;-hist(dsHits2$P.Value,breaks=50, plot=F)
+h2$counts &lt;- h2$counts / sum(h2$counts)
+
+#Plot relative frequency histograms in 1x2 window
+par(mfrow=c(1,2))
+plot(h1,xlab=&quot;P.Value&quot;,main=&quot;Full model&quot;,ylim=c(0,0.15),ylab=&quot;Relative Frequency&quot;)
+plot(h2,xlab=&quot;P.Value&quot;,main=&quot;Simple model&quot;,ylim=c(0,0.15),ylab=&quot;Relative Frequency&quot;)</code></pre>
+<p><img src="Figs/unnamed-chunk-30-1.png" title="" alt="" width="672" /></p>
+<pre class="r"><code>par(mfrow=c(1,1))</code></pre>
+</div>
+</div>
+<div id="test-the-null-hypothesis-1-point" class="section level2">
+<h2>5.2 Test the null hypothesis (1 point)</h2>
+<div id="null-hypothesis-theres-no-significant-interaction-between-time-and-treatment." class="section level5">
+<h5>Null hypothesis: there’s no significant interaction between time and treatment.</h5>
+<pre class="r"><code>#Check effects
+colnames(coef(allEbFit))</code></pre>
+<pre><code>## [1] &quot;(Intercept)&quot;          &quot;Treatmentcs&quot;          &quot;time_num&quot;             &quot;Treatmentcs:time_num&quot;</code></pre>
+<pre class="r"><code>#Extract hits
+dsHitsInt&lt;-topTable(allEbFit,number=Inf,coef = 4, sort.by = &quot;p&quot;)</code></pre>
+</div>
+<div id="explain-in-english-what-you-are-modeling-with-this-interaction-term-what-does-it-represent." class="section level5">
+<h5>Explain in English what you are modeling with this interaction term (what does it represent?).</h5>
+<ul>
+<li>The interaction term is modeling the slope between the treatment effects.</li>
+</ul>
+</div>
+<div id="for-how-many-probes-is-the-interaction-effect-significant-at-the-unadjusted-p-value-1e-3" class="section level5">
+<h5>For how many probes is the interaction effect significant at the unadjusted p-value 1e-3?</h5>
+<pre class="r"><code>length(which(dsHitsInt$P.Value&lt;1e-3))</code></pre>
+<pre><code>## [1] 573</code></pre>
+<ul>
+<li>For 573 probes, the interaction is a significant factor at the unadjusted p-value 1e-3.</li>
+</ul>
+</div>
+<div id="at-fdr-0.05-2" class="section level5">
+<h5>At FDR 0.05?</h5>
+<pre class="r"><code>length(which(dsHitsInt$adj.P.Val&lt;0.05))</code></pre>
+<pre><code>## [1] 664</code></pre>
+<ul>
+<li>For 664 probes, the interaction is a significant factor at FDR 0.05.</li>
+</ul>
+</div>
+</div>
+<div id="plot-a-few-probes-where-the-interaction-does-and-does-not-matter-2-point" class="section level2">
+<h2>5.3 Plot a few probes where the interaction does and does not matter (2 point)</h2>
+<pre class="r"><code>#Extract top 3 and bottom 3 genes according to adj. p-value
+dataInt&lt;-data[which(rownames(data)%in%rownames(dsHitsInt[c(1,2,3,nrow(dsHitsInt)-2,nrow(dsHitsInt)-1,nrow(dsHitsInt)),])),]
+  
+#Convert to repeated observations format
+dataInt2 &lt;- data.frame(sample = rep(colnames(dataInt), each = nrow(dataInt)),
+                             probe = rownames(dataInt),
+                             expression = unlist(dataInt))
+
+dataInt2$time&lt;-NHBE_design[match(dataInt2$sample,NHBE_design$ExternalID),4]
+dataInt2$treatment&lt;-NHBE_design[match(dataInt2$sample,NHBE_design$ExternalID),2]
+
+#Re-order factor levels for plotting
+#Significant probes will be on the top!
+dataInt2$probe&lt;-factor(dataInt2$probe,levels=rownames(dsHitsInt[c(1,2,3,nrow(dsHitsInt)-2,nrow(dsHitsInt)-1,nrow(dsHitsInt)),]))</code></pre>
+<div id="plot-the-expression-levels-for-each-sample-on-the-y-axis-and-time-on-the-x-axis.-color-the-points-based-on-treatment-group." class="section level5">
+<h5>Plot the expression levels for each sample on the y-axis and time on the x-axis. Color the points based on treatment group.</h5>
+</div>
+<div id="include-the-fitted-regression-lines-in-your-plots." class="section level5">
+<h5>Include the fitted regression lines in your plots.</h5>
+<pre class="r"><code>#Plot the plot
+ggplot(dataInt2, aes(x = time, y = expression)) +
+  geom_point(aes(color = treatment),position=position_jitter(width = 0.1)) +
+  geom_smooth(method = &#39;lm&#39;, se=F)+
+  facet_wrap(~ probe)</code></pre>
+<p><img src="Figs/unnamed-chunk-35-1.png" title="" alt="" width="672" /></p>
+<hr />
+</div>
+</div>
+</div>
+<div id="question-6-microarray-analysis" class="section level1">
+<h1>Question 6: Microarray analysis</h1>
+<div id="the-six-samples-in-this-study-3-replicates-for-each-of-the-two-conditions-were-analysed-on-the-affymetrix-yeast-genome-array-2.0-platform.-we-have-already-downloaded-the-raw-cel-files-from-geo-and-normalised-them.-the-normalized-data-is-saved-in-the-file-gse37599-data.tsv" class="section level3">
+<h3>The six samples in this study, 3 replicates for each of the two conditions, were analysed on the Affymetrix Yeast Genome Array 2.0 platform. We have already downloaded the raw CEL files from GEO and normalised them. The normalized data is saved in the file GSE37599-data.tsv</h3>
+</div>
+<div id="data-loading-and-qc-2-points" class="section level2">
+<h2>6.1 Data loading and QC (2 points)</h2>
+<div id="first-load-the-normalized-data." class="section level5">
+<h5>First, load the normalized data.</h5>
+<pre class="r"><code>GSE37599.data &lt;- read.delim(&quot;GSE37599-data.tsv&quot;, stringsAsFactors=FALSE)
+rownames(GSE37599.data)&lt;-GSE37599.data[,1]</code></pre>
+</div>
+<div id="what-are-dimensions-of-the-dataset" class="section level5">
+<h5>What are dimensions of the dataset?</h5>
+</div>
+<div id="in-addition-to-reporting-number-of-rows-and-columns-make-it-clear-what-rows-and-columns-represent-and-how-youre-interpreting-column-names." class="section level5">
+<h5>In addition to reporting number of rows and columns, make it clear what rows and columns represent and how you’re interpreting column names.</h5>
+<pre class="r"><code>dim(GSE37599.data[,-1])</code></pre>
+<pre><code>## [1] 10928     6</code></pre>
+<ul>
+<li>Rows=10928 (probes: normalized expression), Cols=6 (samples: 2 treatments (“b” and “c”) x 3 reps (“1”,“2”,“3”))</li>
+</ul>
+</div>
+<div id="produce-the-plots-described-below-and-explain-how-they-allow-you-to-identify-the-swapped-samples." class="section level5">
+<h5>Produce the plots described below and explain how they allow you to identify the swapped samples.</h5>
+</div>
+<div id="high-volume-scatter-plot-matrix" class="section level5">
+<h5>(High volume) scatter plot matrix</h5>
+<pre class="r"><code>pairs(GSE37599.data[,-1])</code></pre>
+<p><img src="Figs/unnamed-chunk-38-1.png" title="" alt="" width="672" /></p>
+</div>
+<div id="a-heatmap-of-the-first-100-genes" class="section level5">
+<h5>A heatmap of the first 100 genes</h5>
+<pre class="r"><code>ggplot(melt(GSE37599.data[c(1:100),]), aes(x = variable, y = X, fill = value)) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
+  geom_tile() +
+  theme(axis.text.y = element_blank()) +
+  theme(axis.ticks.y = element_blank()) +
+  labs(x=&quot;Sample&quot;,y=&quot;&quot;,title=&quot;First 100 Genes Heatmap&quot;) +
+  scale_fill_gradient2(low = jBuPuPalette[1],
+                       mid = jBuPuPalette[paletteSize/2],
+                       high = jBuPuPalette[paletteSize],
+                       midpoint = (max(melt(GSE37599.data[c(1:100),])$value) +
+                                     min(melt(GSE37599.data[c(1:100),])$value)) / 2,
+                       name = &quot;Expression&quot;)</code></pre>
+<p><img src="Figs/unnamed-chunk-39-1.png" title="" alt="" width="672" /></p>
+</div>
+<div id="compute-the-pearson-correlation-of-the-samples-and-plot-the-results-using-a-heatmap." class="section level5">
+<h5>Compute the Pearson correlation of the samples and plot the results using a heatmap.</h5>
+<pre class="r"><code>print(melt(cor(GSE37599.data[,-1])))</code></pre>
+<pre><code>##    Var1 Var2     value
+## 1    b1   b1 1.0000000
+## 2    b2   b1 0.9624810
+## 3    b3   b1 0.9620857
+## 4    c1   b1 0.9983630
+## 5    c2   b1 0.9678878
+## 6    c3   b1 0.9988854
+## 7    b1   b2 0.9624810
+## 8    b2   b2 1.0000000
+## 9    b3   b2 0.9980078
+## 10   c1   b2 0.9657525
+## 11   c2   b2 0.9977190
+## 12   c3   b2 0.9629416
+## 13   b1   b3 0.9620857
+## 14   b2   b3 0.9980078
+## 15   b3   b3 1.0000000
+## 16   c1   b3 0.9648898
+## 17   c2   b3 0.9973109
+## 18   c3   b3 0.9628669
+## 19   b1   c1 0.9983630
+## 20   b2   c1 0.9657525
+## 21   b3   c1 0.9648898
+## 22   c1   c1 1.0000000
+## 23   c2   c1 0.9707645
+## 24   c3   c1 0.9978385
+## 25   b1   c2 0.9678878
+## 26   b2   c2 0.9977190
+## 27   b3   c2 0.9973109
+## 28   c1   c2 0.9707645
+## 29   c2   c2 1.0000000
+## 30   c3   c2 0.9685690
+## 31   b1   c3 0.9988854
+## 32   b2   c3 0.9629416
+## 33   b3   c3 0.9628669
+## 34   c1   c3 0.9978385
+## 35   c2   c3 0.9685690
+## 36   c3   c3 1.0000000</code></pre>
+<pre class="r"><code>ggplot(melt(cor(GSE37599.data[,-1])), aes(x=Var1,y=Var2, z= value)) + 
+  geom_tile(aes(fill= value)) + 
+  theme_bw() + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(x=&quot;&quot;,y=&quot;&quot;,title=&quot;Sample Correlations&quot;)+
+  scale_fill_gradient2(low = jBuPuPalette[1],
+                       mid = jBuPuPalette[paletteSize/2],
+                       high = jBuPuPalette[paletteSize],
+                       midpoint = (max(melt(cor(GSE37599.data[,-1]))[3]) +
+                                     min(melt(cor(GSE37599.data[,-1]))[3])) / 2,
+                       name = &quot;Correlation&quot;)</code></pre>
+<p><img src="Figs/unnamed-chunk-40-1.png" title="" alt="" width="672" /></p>
+</div>
+<div id="scatterplot-the-six-data-samples-with-respect-to-the-first-two-principal-components-and-label-the-samples." class="section level5">
+<h5>Scatterplot the six data samples with respect to the first two principal components and label the samples.</h5>
+<pre class="r"><code>#Arrange and scale data
+temp&lt;-t(GSE37599.data[,-1])
+temp&lt;-scale(temp)
+
+#PCA
+temp.pca&lt;-prcomp(temp)
+
+#Plots first two PCs
+plot(temp.pca$x[,c(1:2)],col=factor(rownames(temp.pca$x)),main=&quot;PC1 vs PC2&quot;, ylim=c(-40, 65))
+text(temp.pca$x[,1], temp.pca$x[,2], labels=rownames(temp.pca$x), cex= 0.7, pos=3)</code></pre>
+<p><img src="Figs/unnamed-chunk-41-1.png" title="" alt="" width="672" /></p>
+<ul>
+<li>The various methods allow us to see the structure of the data. This shows us that B1 and C2 should be swapped.</li>
+</ul>
+</div>
+</div>
+<div id="microarray-dea-2-points" class="section level2">
+<h2>6.2 Microarray DEA (2 points)</h2>
+<div id="fix-the-label-swap-identified-in-the-previous-question." class="section level5">
+<h5>Fix the label swap identified in the previous question.</h5>
+<pre class="r"><code>#Fix label swap
+colnames(GSE37599.data)&lt;-c(&quot;X&quot;,&quot;c2&quot;,&quot;b2&quot;,&quot;b3&quot;,&quot;c1&quot;,&quot;b1&quot;,&quot;c3&quot;)
+#Reorder columns
+GSE37599.data&lt;-GSE37599.data[c(&quot;X&quot;,&quot;b1&quot;,&quot;b2&quot;,&quot;b3&quot;,&quot;c1&quot;,&quot;c2&quot;,&quot;c3&quot;)]</code></pre>
+</div>
+<div id="now-use-this-data-to-do-a-differential-expression-analysis-with-limma." class="section level5">
+<h5>Now use this data to do a differential expression analysis with limma.</h5>
+<pre class="r"><code>#Create grouping variable
+group &lt;- factor(c(rep(&quot;1&quot;,3),rep(&quot;2&quot;,3)))
+
+#Design matrix
+design &lt;- model.matrix(~group)
+design</code></pre>
+<pre><code>##   (Intercept) group2
+## 1           1      0
+## 2           1      0
+## 3           1      0
+## 4           1      1
+## 5           1      1
+## 6           1      1
+## attr(,&quot;assign&quot;)
+## [1] 0 1
+## attr(,&quot;contrasts&quot;)
+## attr(,&quot;contrasts&quot;)$group
+## [1] &quot;contr.treatment&quot;</code></pre>
+<pre class="r"><code>#Normalize expression with voom
+norm.factor &lt;- calcNormFactors(GSE37599.data[,-1])
+dat.voomed &lt;- voom(GSE37599.data[,-1],design,plot=TRUE,lib.size=colSums(GSE37599.data[,-1])*norm.factor)</code></pre>
+<p><img src="Figs/unnamed-chunk-43-1.png" title="" alt="" width="672" /></p>
+<pre class="r"><code>#Fit the model
+fit &lt;- lmFit(dat.voomed, design)
+fit &lt;- eBayes(fit)</code></pre>
+</div>
+<div id="package-these-results-in-a-data-frame-with-six-columns" class="section level5">
+<h5>Package these results in a data frame with six columns:</h5>
+</div>
+<div id="probe.id---the-array-probe-id." class="section level5">
+<h5>probe.id - The array probe id.</h5>
+</div>
+<div id="gene.id---the-id-of-the-gene-which-the-probe-overlaps-see-below." class="section level5">
+<h5>gene.id - The id of the gene which the probe overlaps (see below).</h5>
+</div>
+<div id="p.value---the-raw-p-value-for-the-probe." class="section level5">
+<h5>p.value - The raw p-value for the probe.</h5>
+</div>
+<div id="q.value---the-bh-corrected-p-value-aka-the-q-value." class="section level5">
+<h5>q.value - The BH corrected p-value, aka the q-value.</h5>
+</div>
+<div id="log.fc---the-log-fold-change-which-is-the-column-called-logfc-in-the-limma-results-table." class="section level5">
+<h5>log.fc - The log fold change which is the column called “logFC” in the limma results table.</h5>
+</div>
+<div id="test.stat---the-test-statistics-which-for-limma-is-the-moderated-t-statistic.-this-is-the-column-called-t-in-the-limma-results-table." class="section level5">
+<h5>test.stat - The test statistics which for limma is the moderated t statistic. This is the column called “t” in the limma results table.</h5>
+<pre class="r"><code>#Extract hits
+exp.Res&lt;-topTable(fit, number = Inf)
+
+#Create packaged data frame
+exp.Res&lt;-data.frame(probe.id=as.character(rownames(exp.Res)),gene.id=&quot;NA&quot;,p.value=as.numeric(exp.Res$P.Value),q.value=as.numeric(exp.Res$adj.P.Val),log.fc=as.numeric(exp.Res$logFC),test.stat=as.numeric(exp.Res$t),stringsAsFactors = F)
+
+#Check order of gene.id and probe.id data frames
+all.equal(names(unlist(mget(exp.Res[,1], yeast2ORF))),exp.Res[,1])</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>#Add gene IDs
+exp.Res[,2]&lt;-as.character(unlist(mget(exp.Res[,1], yeast2ORF)))
+exp.Res&lt;-as.data.frame(exp.Res)</code></pre>
+</div>
+</div>
+<div id="microarray-dea-continue-1-point" class="section level2">
+<h2>6.3 Microarray DEA continue (1 point)</h2>
+<div id="remove-any-rows-with-probes-which-dont-map-to-genes.-youll-be-able-to-find-these-because-they-will-have-na-as-their-gene-id." class="section level5">
+<h5>Remove any rows with probes which don’t map to genes. You’ll be able to find these because they will have NA as their gene id.</h5>
+<pre class="r"><code>nrow(exp.Res)</code></pre>
+<pre><code>## [1] 10928</code></pre>
+<pre class="r"><code>exp.Res&lt;-exp.Res[-c(which(is.na(exp.Res[,2]))),]
+nrow(exp.Res)</code></pre>
+<pre><code>## [1] 5705</code></pre>
+</div>
+<div id="how-many-probes-did-we-start-with-and-how-many-remain-after-removing-probes-without-gene-ids" class="section level5">
+<h5>How many probes did we start with and how many remain after removing probes without gene ids?</h5>
+<ul>
+<li>Started with 10,928. 5,705 probes mapped to genes.</li>
+</ul>
+</div>
+<div id="illustrate-the-differential-expression-between-the-batch-and-the-chemostat-samples-for-the-top-hit-i.e.-probe-with-the-lowest-p--or-q-value." class="section level5">
+<h5>Illustrate the differential expression between the batch and the chemostat samples for the top hit (i.e., probe with the lowest p- or q-value).</h5>
+<pre class="r"><code>#Order hits by q.value
+exp.Res&lt;-exp.Res[order(exp.Res$q.value),]
+
+#Extract top hit
+temp&lt;-GSE37599.data[which(GSE37599.data[,1]%in%exp.Res[1,1]),]
+
+#Long format data
+temp&lt;-melt(temp)
+temp[,2]&lt;-c(rep(&quot;batch&quot;,3),rep(&quot;chemo&quot;,3))
+colnames(temp)&lt;-c(&quot;Probe&quot;,&quot;Treatment&quot;,&quot;Expression&quot;)
+
+#Plot
+ggplot(temp, aes(x = Treatment, y = Expression)) +
+  geom_point(aes(color = Treatment),position=position_jitter(width = 0.1)) +
+  facet_wrap(~ Probe)</code></pre>
+<p><img src="Figs/unnamed-chunk-46-1.png" title="" alt="" width="672" /></p>
+</div>
+<div id="how-many-probes-are-identified-as-differentially-expressed-at-a-false-discovery-rate-fdr-of-1e-5-note-this-is-a-fdr-cutoff-used-in-the-original-paper" class="section level5">
+<h5>How many probes are identified as differentially expressed at a false discovery rate (FDR) of 1e-5 (note: this is a FDR cutoff used in the original paper)?</h5>
+<pre class="r"><code>print(length(which(exp.Res$q.value&lt;1e-5)))</code></pre>
+<pre><code>## [1] 1313</code></pre>
+<ul>
+<li>1,313 probes are identified as differentially expressed at a false discovery rate (FDR) of 1e-5</li>
+</ul>
+</div>
+<div id="save-this-data.frame-for-later-with-write.table" class="section level5">
+<h5>Save this data.frame for later with write.table()</h5>
+<pre class="r"><code>write.table(exp.Res,&quot;exp.Res.txt&quot;,col.names=T,row.names=F,quote=F,sep=&quot;\t&quot;,append=F)</code></pre>
+<hr />
+</div>
+</div>
+</div>
+<div id="question-7-rna-seq-analysis" class="section level1">
+<h1>Question 7: RNA-seq analysis</h1>
+<div id="we-have-aligned-the-rna-seq-library-using-the-stampy-aligner-and-generated-count-data." class="section level5">
+<h5>We have aligned the RNA-Seq library using the Stampy aligner and generated count data.</h5>
+</div>
+<div id="this-particular-rna-seq-dataset-was-sequenced-to-quite-a-high-depth." class="section level5">
+<h5>This particular RNA-Seq dataset was sequenced to quite a high depth.</h5>
+</div>
+<div id="the-data-file-is-available-as-stampy.deep.counts.tsv." class="section level5">
+<h5>The data file is available as stampy.deep.counts.tsv.</h5>
+</div>
+<div id="in-this-question-you-will-use-this-data-to-do-a-differential-expression-analysis." class="section level5">
+<h5>In this question you will use this data to do a differential expression analysis.</h5>
+</div>
+<div id="load-rna-count-data-and-sanity-check-1-point" class="section level2">
+<h2>7.1 Load RNA Count Data and Sanity Check (1 point)</h2>
+<pre class="r"><code>sty.counts &lt;- read.delim(&quot;stampy.deep.counts.tsv&quot;, stringsAsFactors=FALSE)</code></pre>
+<div id="what-are-dimensions-of-the-dataset-in-addition-to-reporting-number-of-rows-and-columns-make-it-clear-what-rows-and-columns-represent." class="section level5">
+<h5>What are dimensions of the dataset? In addition to reporting number of rows and columns, make it clear what rows and columns represent.</h5>
+<pre class="r"><code>dim(sty.counts)</code></pre>
+<pre><code>## [1] 6542    7</code></pre>
+<ul>
+<li>6542 rows by 7 columns</li>
+<li>Rows=genes</li>
+<li>Cols=gene ID and samples</li>
+</ul>
+</div>
+<div id="what-is-the-difference-between-the-rows-of-this-dataset-versus-rows-of-the-array-data-in-question-1a" class="section level5">
+<h5>What is the difference between the rows of this dataset versus rows of the array data in question 1a?</h5>
+<ul>
+<li>The rows here represent count data, not expression intensity</li>
+</ul>
+</div>
+<div id="do-a-sanity-check-to-make-sure-there-is-no-sample-swap-by-plotting-a-heatmap-of-the-sample-correlations." class="section level5">
+<h5>Do a sanity check to make sure there is no sample swap by plotting a heatmap of the sample correlations.</h5>
+<pre class="r"><code>ggplot(melt(cor(sty.counts[,-1])), aes(x=Var1,y=Var2, z= value)) + 
+  geom_tile(aes(fill= value)) + 
+  theme_bw() + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(x=&quot;&quot;,y=&quot;&quot;,title=&quot;Sample Correlations&quot;)+
+  scale_fill_gradient2(low = jBuPuPalette[1],
+                       mid = jBuPuPalette[paletteSize/2],
+                       high = jBuPuPalette[paletteSize],
+                       midpoint = (max(melt(cor(sty.counts[,-1]))[3]) +
+                                     min(melt(cor(sty.counts[,-1]))[3])) / 2,
+                       name = &quot;Pearson correlation&quot;)</code></pre>
+<p><img src="Figs/unnamed-chunk-51-1.png" title="" alt="" width="672" /> * Looks good</p>
+</div>
+</div>
+<div id="dea-of-deep-sequencing-data-1-point" class="section level2">
+<h2>7.2 DEA of deep sequencing data (1 point)</h2>
+<div id="now-you-will-use-edger-to-identify-differentially-expressed-genes-between-the-batch-medium-vs.chemostat-conditions." class="section level5">
+<h5>Now you will use edgeR to identify differentially expressed genes between the batch medium vs. chemostat conditions.</h5>
+</div>
+<div id="recall-that-edger-needs-to-estimate-the-dispersion-parameter-in-the-negative-binomial-model-using-an-empirical-bayes-method." class="section level5">
+<h5>Recall that edgeR needs to estimate the dispersion parameter in the negative binomial model using an empirical Bayes method.</h5>
+</div>
+<div id="estimate-the-dispersion-parameters-using-estimateglmcommondisp-estimateglmtrendeddisp-and-estimateglmtagwisedisp." class="section level5">
+<h5>Estimate the dispersion parameters using estimateGLMCommonDisp, estimateGLMTrendedDisp and estimateGLMTagwiseDisp.</h5>
+<pre class="r"><code>dge.glm &lt;- DGEList(counts=sty.counts[,-1], group=group)
+str(dge.glm)</code></pre>
+<pre><code>## Formal class &#39;DGEList&#39; [package &quot;edgeR&quot;] with 1 slot
+##   ..@ .Data:List of 2
+##   .. ..$ : int [1:6542, 1:6] 11 40 31 63 112 17 0 4 5 0 ...
+##   .. .. ..- attr(*, &quot;dimnames&quot;)=List of 2
+##   .. .. .. ..$ : chr [1:6542] &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;4&quot; ...
+##   .. .. .. ..$ : chr [1:6] &quot;b1&quot; &quot;b2&quot; &quot;b3&quot; &quot;c1&quot; ...
+##   .. ..$ :&#39;data.frame&#39;:  6 obs. of  3 variables:
+##   .. .. ..$ group       : Factor w/ 2 levels &quot;1&quot;,&quot;2&quot;: 1 1 1 2 2 2
+##   .. .. ..$ lib.size    : num [1:6] 3420851 4487585 3415378 2529571 2990956 ...
+##   .. .. ..$ norm.factors: num [1:6] 1 1 1 1 1 1</code></pre>
+<pre class="r"><code>dge.glm.com.disp &lt;- estimateGLMCommonDisp(dge.glm,design, verbose=TRUE)</code></pre>
+<pre><code>## Disp = 0.00551 , BCV = 0.0742</code></pre>
+<pre class="r"><code>dge.glm.trend.disp &lt;- estimateGLMTrendedDisp(dge.glm.com.disp, design)
+
+dge.glm.tag.disp &lt;- estimateGLMTagwiseDisp(dge.glm.trend.disp, design)
+
+#plot the tagwise dispersion against log2-CPM (counts per million)
+plotBCV(dge.glm.tag.disp)</code></pre>
+<p><img src="Figs/unnamed-chunk-52-1.png" title="" alt="" width="672" /></p>
+</div>
+<div id="use-the-glm-functionality-of-edger-i.e.use-the-glmfit-function-to-identify-differentially-expressed-genes-between-conditions." class="section level5">
+<h5>Use the glm functionality of edgeR, i.e. use the glmFit function, to identify differentially expressed genes between conditions.</h5>
+<pre class="r"><code>fit &lt;- glmFit(dge.glm.tag.disp,design)
+colnames(coef(fit))</code></pre>
+<pre><code>## [1] &quot;(Intercept)&quot; &quot;group2&quot;</code></pre>
+<pre class="r"><code>lrt &lt;- glmLRT(fit,coef=2)
+tt.glm &lt;- topTags(lrt, n=Inf,sort.by = &quot;none&quot;)</code></pre>
+</div>
+<div id="how-many-genes-are-differentially-expressed-between-conditions-at-a-false-discovery-rate-fdr-of-1e-5" class="section level5">
+<h5>How many genes are differentially expressed between conditions at a false discovery rate (FDR) of 1e-5?</h5>
+<pre class="r"><code>nrow(tt.glm$table[tt.glm$table$FDR &lt; 1e-5,])</code></pre>
+<pre><code>## [1] 2669</code></pre>
+<ul>
+<li>2669 genes are differentially expressed between conditions at FDR 1e-5.</li>
+</ul>
+</div>
+<div id="package-these-results-in-a-data.frame-called-edger.deep.results-with-five-columns" class="section level5">
+<h5>Package these results in a data.frame called ‘edger.deep.results’ with five columns:</h5>
+</div>
+<div id="gene.id---the-id-of-the-gene-which-reads-were-aligned-to." class="section level5">
+<h5>gene.id - The id of the gene which reads were aligned to.</h5>
+</div>
+<div id="p.value---the-raw-p-value-for-the-gene." class="section level5">
+<h5>p.value - The raw p-value for the gene.</h5>
+</div>
+<div id="q.value---the-bh-corrected-p-value-aka-the-q-value.-1" class="section level5">
+<h5>q.value - The BH corrected p-value, aka the q-value.</h5>
+</div>
+<div id="log.fc---the-log-fold-change-which-is-the-column-called-logfc-in-the-edger-results-table." class="section level5">
+<h5>log.fc - The log fold change which is the column called “logFC” in the edgeR results table.</h5>
+</div>
+<div id="test.stat---the-test-statistic-which-for-edger-is-a-likelihood-ratio.-this-is-the-column-called-lr-in-the-edger-results-table." class="section level5">
+<h5>test.stat - The test statistic, which for edgeR is a likelihood ratio. This is the column called “LR” in the edgeR results table.</h5>
+<pre class="r"><code>exp.Res2&lt;-data.frame(gene.id=sty.counts$X, p.value=tt.glm$table$PValue,q.value=tt.glm$table$FDR,log.fc= tt.glm$table$logFC,test.stat=tt.glm$table$LR,stringsAsFactors = F)</code></pre>
+</div>
+<div id="save-this-data.frame-for-later-with-write.table-1" class="section level5">
+<h5>Save this data.frame for later with write.table()</h5>
+<pre class="r"><code>write.table(exp.Res2,&quot;exp.Res2.txt&quot;,col.names=T,row.names=F,quote=F,sep=&quot;\t&quot;,append=F)</code></pre>
+</div>
+</div>
+<div id="dea-of-low-sequencing-data-1-point" class="section level2">
+<h2>7.3 DEA of low sequencing data (1 point)</h2>
+<div id="sequencing-depth-is-a-major-factor-in-rna-seq-analysis-as-rule-of-thumb-the-deeper-you-sequence-the-more-power-you-have." class="section level5">
+<h5>Sequencing depth is a major factor in RNA-Seq analysis; as rule of thumb, the deeper you sequence the more power you have.</h5>
+</div>
+<div id="to-investigate-this-claim-we-have-created-a-low-depth-dataset-by-randomly-selecting-1-of-the-reads-and-discarding-the-remaining-99." class="section level5">
+<h5>To investigate this claim, we have created a low depth dataset by randomly selecting 1% of the reads and discarding the remaining 99%.</h5>
+</div>
+<div id="this-low-depth-count-data-was-also-aligned-with-stampy." class="section level5">
+<h5>This low depth count data was also aligned with Stampy.</h5>
+</div>
+<div id="load-the-low-depth-count-data-using-read.table-you-will-need-to-pass-the-arguments-headertrue-and-row.names1." class="section level5">
+<h5>Load the low depth count data using read.table; you will need to pass the arguments header=TRUE and row.names=1.</h5>
+<pre class="r"><code>sty.low.counts &lt;- read.delim(&quot;stampy.low.counts.tsv&quot;, stringsAsFactors=FALSE)</code></pre>
+</div>
+<div id="repeat-the-same-steps-as-in-7.2-except-package-your-results-in-a-data.frame-called-edger.low.results.-answer-the-same-questions." class="section level5">
+<h5>Repeat the same steps as in 7.2 except package your results in a data.frame called “edger.low.results”. Answer the same questions.</h5>
+<pre class="r"><code>dge.glm &lt;- DGEList(counts=sty.low.counts[,-1], group=group)
+dge.glm.com.disp &lt;- estimateGLMCommonDisp(dge.glm,design, verbose=TRUE)</code></pre>
+<pre><code>## Disp = 0.0042 , BCV = 0.0648</code></pre>
+<pre class="r"><code>dge.glm.trend.disp &lt;- estimateGLMTrendedDisp(dge.glm.com.disp, design)
+dge.glm.tag.disp &lt;- estimateGLMTagwiseDisp(dge.glm.trend.disp, design)
+
+#plot the tagwise dispersion against log2-CPM (counts per million)
+plotBCV(dge.glm.tag.disp)</code></pre>
+<p><img src="Figs/unnamed-chunk-58-1.png" title="" alt="" width="672" /></p>
+</div>
+<div id="use-the-glm-functionality-of-edger-i.e.use-the-glmfit-function-to-identify-differentially-expressed-genes-between-conditions.-1" class="section level5">
+<h5>Use the glm functionality of edgeR, i.e. use the glmFit function, to identify differentially expressed genes between conditions.</h5>
+<pre class="r"><code>fit &lt;- glmFit(dge.glm.tag.disp,design)
+colnames(coef(fit))</code></pre>
+<pre><code>## [1] &quot;(Intercept)&quot; &quot;group2&quot;</code></pre>
+<pre class="r"><code>lrt &lt;- glmLRT(fit,coef=2)
+tt.glm &lt;- topTags(lrt, n=Inf,sort.by = &quot;none&quot;)</code></pre>
+</div>
+<div id="how-many-genes-are-differentially-expressed-between-conditions-at-a-false-discovery-rate-fdr-of-1e-5-1" class="section level5">
+<h5>How many genes are differentially expressed between conditions at a false discovery rate (FDR) of 1e-5?</h5>
+<pre class="r"><code>nrow(tt.glm$table[tt.glm$table$FDR &lt; 1e-5,])</code></pre>
+<pre><code>## [1] 486</code></pre>
+<ul>
+<li>486 genes are differentially expressed between conditions at FDR 1e-5.</li>
+</ul>
+<pre class="r"><code>#Package results
+edger.low.results&lt;-data.frame(gene.id=sty.low.counts$X, p.value=tt.glm$table$PValue,q.value=tt.glm$table$FDR,log.fc= tt.glm$table$logFC,test.stat=tt.glm$table$LR,stringsAsFactors = F)
+
+
+write.table(edger.low.results,&quot;edger.low.results.txt&quot;,col.names=T,row.names=F,quote=F,sep=&quot;\t&quot;,append=F)</code></pre>
+</div>
+</div>
+<div id="deep-vs-low-sequencing-1-point" class="section level2">
+<h2>7.4 Deep vs low sequencing (1 point)</h2>
+<div id="create-a-venn-diagram-showing-all-genes-identified-as-differentially-expressed-at-fdr-of-1e-5-in-the-two-previous-rna-seq-analyses-and" class="section level5">
+<h5>Create a Venn diagram showing all genes identified as differentially expressed (at FDR of 1e-5) in the two previous RNA-Seq analyses and</h5>
+</div>
+<div id="answer-the-following-questions-based-on-the-diagram" class="section level5">
+<h5>Answer the following questions based on the diagram:</h5>
+<pre class="r"><code>#Extract relevant hits
+temp1&lt;-edger.low.results[edger.low.results$q.value&lt;1e-5,]
+temp2&lt;-exp.Res2[exp.Res2$q.value&lt;1e-5,]
+
+#size of low read set
+length(unique(temp1[,1]))</code></pre>
+<pre><code>## [1] 486</code></pre>
+<pre class="r"><code>#size of deep read set
+length(unique(temp2[,1]))</code></pre>
+<pre><code>## [1] 2669</code></pre>
+<pre class="r"><code>#size of intersection set
+length(intersect(temp1[,1],temp2[,1]))</code></pre>
+<pre><code>## [1] 485</code></pre>
+<pre class="r"><code>#plot Venn diagram
+grid.newpage()
+draw.pairwise.venn(486, 2669, 485, category = c(&quot;Low Read Depth&quot;, &quot;High Read Depth&quot;), lty = rep(&quot;blank&quot;,2), fill = c(&quot;light blue&quot;, &quot;pink&quot;), alpha = rep(0.5, 2), cat.pos = c(0,0), cat.dist = rep(0.025, 2))</code></pre>
+<p><img src="Figs/unnamed-chunk-62-1.png" title="" alt="" width="672" /></p>
+<pre><code>## (polygon[GRID.polygon.817], polygon[GRID.polygon.818], polygon[GRID.polygon.819], polygon[GRID.polygon.820], text[GRID.text.821], text[GRID.text.822], lines[GRID.lines.823], text[GRID.text.824], text[GRID.text.825], text[GRID.text.826])</code></pre>
+</div>
+<div id="how-many-genes-were-identified-by-edger-in-both-low-and-deep-count-data" class="section level5">
+<h5>How many genes were identified by edgeR in both low and deep count data?</h5>
+<pre class="r"><code>length(intersect(temp1[,1],temp2[,1]))</code></pre>
+<pre><code>## [1] 485</code></pre>
+<ul>
+<li>485</li>
+</ul>
+</div>
+<div id="how-many-genes-were-identified-in-all-the-analyses" class="section level5">
+<h5>How many genes were identified in all the analyses?</h5>
+<pre class="r"><code>length(unique(c(temp1[,1],temp2[,1])))</code></pre>
+<pre><code>## [1] 2670</code></pre>
+<ul>
+<li>2670 unique</li>
+</ul>
+</div>
+<div id="comment-on-the-effect-of-sequencing-depth-on-the-dea-results." class="section level5">
+<h5>Comment on the effect of sequencing depth on the DEA results.</h5>
+<ul>
+<li>Deeper depth appears to increase number of significant hits.</li>
+</ul>
+<hr />
+</div>
+</div>
+</div>
+<div id="question-8-compare-dea-results-from-rna-seq-and-arrays" class="section level1">
+<h1>Question 8: Compare DEA results from RNA-Seq and arrays</h1>
+<div id="in-question-6-you-performed-a-dea-of-array-data-using-limma.-in-question-7-you-used-edger-to-perform-dea-of-rna-seq-data." class="section level5">
+<h5>In question 6, you performed a DEA of array data using limma. In question 7, you used edgeR to perform DEA of RNA-Seq data.</h5>
+</div>
+<div id="in-this-question-you-will-compare-the-results-of-rna-seq-dea-with-those-of-the-array-dea." class="section level5">
+<h5>In this question, you will compare the results of RNA-Seq DEA with those of the array DEA.</h5>
+</div>
+<div id="remember-that-youve-packaged-your-results-and-saved-them-using-write.table.-if-the-data.frames-containing-the-results-of-these-analyses-are-no-longer-in-your-workspace-you-can-load-them-using-read.table." class="section level5">
+<h5>Remember that you’ve packaged your results and saved them using write.table(). If the data.frames containing the results of these analyses are no longer in your workspace, you can load them using read.table().</h5>
+</div>
+<div id="plots-of-interesting-and-boring-genes-2-point" class="section level2">
+<h2>8.1 Plots of interesting and boring genes (2 point)</h2>
+<div id="plot-the-gene-expression-i.e.-from-array-data-and-the-logged-counts-i.e.-from-deep-rna-seq-data-of-two-interesting-genes-identified" class="section level5">
+<h5>Plot the gene expression (i.e., from array data) and the logged counts (i.e., from deep RNA-Seq data) of: two interesting genes identified</h5>
+</div>
+<div id="as-de-by-both-analyses" class="section level5">
+<h5>1. as DE by both analyses;</h5>
+<pre class="r"><code>#First, identify genes required for plot
+intersect(exp.Res[which(exp.Res[,4]&lt;1e-5),2],exp.Res2[which(exp.Res2[,3]&lt;1e-5),1])[c(1)]</code></pre>
+<pre><code>## [1] &quot;YIL155C&quot;</code></pre>
+</div>
+<div id="one-de-gene-identified-as-de-only-in-the-array-analysis" class="section level5">
+<h5>2. one DE gene identified as DE only in the array analysis;</h5>
+<pre class="r"><code>setdiff(exp.Res[which(exp.Res[,4]&lt;1e-5),2],exp.Res2[which(exp.Res2[,3]&lt;1e-5),1])[c(2)]</code></pre>
+<pre><code>## [1] &quot;YGL209W&quot;</code></pre>
+</div>
+<div id="one-de-gene-only-in-the-edger-analysis" class="section level5">
+<h5>3. one DE gene only in the edgeR analysis;</h5>
+<pre class="r"><code>setdiff(exp.Res2[which(exp.Res2[,3]&lt;1e-5),1],exp.Res[which(exp.Res[,4]&lt;1e-5),2])[c(15)]</code></pre>
+<pre><code>## [1] &quot;YAL038W&quot;</code></pre>
+</div>
+<div id="one-boring-gene-in-array-analysis" class="section level5">
+<h5>4. one boring gene in array analysis</h5>
+<pre class="r"><code>exp.Res[which(exp.Res[,4]&gt;1e-1),2][c(1)]</code></pre>
+<pre><code>## [1] &quot;YHR083W&quot;</code></pre>
+</div>
+<div id="one-boring-gene-in-edger-analysis" class="section level5">
+<h5>5. one boring gene in edgeR analysis:</h5>
+<pre class="r"><code>exp.Res2[which(exp.Res2[,3]&gt;1e-2),1][c(50)]</code></pre>
+<pre><code>## [1] &quot;YAL047C&quot;</code></pre>
+</div>
+<div id="i.e.-5-genes-total-measured-with-2-platforms" class="section level5">
+<h5>(i.e., 5 genes total measured with 2 platforms)</h5>
+<pre class="r"><code>#Extract genes of interest
+temp1&lt;-exp.Res[which(exp.Res$gene.id%in%c(&quot;YIL155C&quot;,&quot;YGL209W&quot;,&quot;YAL038W&quot;,&quot;YHR083W&quot;,&quot;YAL047C&quot;)),]
+temp2&lt;-GSE37599.data[which(GSE37599.data$X%in%temp1$probe.id),]
+
+temp1&lt;-temp1[order(temp1$probe.id),]
+temp2&lt;-temp2[order(temp2$X),]
+
+all.equal(temp1$probe.id,temp2$X)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>temp2$X&lt;-temp1$gene.id
+print(temp2)</code></pre>
+<pre><code>##                  X        b1        b2        b3        c1        c2        c3
+## 1770962_at YAL038W 12.947495 12.886726 12.863106 12.660910 12.830662 12.820493
+## 1775999_at YHR083W  8.988651  9.161674  9.168342  8.744228  8.723073  8.633128
+## 1776471_at YGL209W  7.328894  7.395340  7.367554  5.038703  5.112536  4.902519
+## 1777556_at YIL155C  7.575720  7.329873  7.372745 11.899666 11.877211 11.969712
+## 1778536_at YAL047C  5.930029  5.896662  5.889662  6.071035  5.957254  5.962386</code></pre>
+<pre class="r"><code>#Organize data into single data frame
+temp2$type&lt;-&quot;MicroArray&quot;
+temp2&lt;-temp2[order(temp2$X),]
+#get expression level
+
+temp3&lt;-sty.counts[which(sty.counts$X%in%c(&quot;YIL155C&quot;,&quot;YGL209W&quot;,&quot;YAL038W&quot;,&quot;YHR083W&quot;,&quot;YAL047C&quot;)),]
+print(temp3)</code></pre>
+<pre><code>##            X   b1    b2   b3   c1   c2   c3
+## 81   YAL038W 8410 11962 9519 3005 4625 5575
+## 92   YAL047C  130   196  143  124  135  184
+## 2261 YGL209W  121   150  110   91  107  136
+## 2782 YHR083W  348   419  330  239  222  324
+## 3103 YIL155C  307   332  221 6238 6358 7551</code></pre>
+<pre class="r"><code>temp3$type&lt;-&quot;RNA-Seq&quot;
+temp3&lt;-temp3[order(temp3$X),]
+
+temp4&lt;-rbind(temp2,temp3)  
+temp4$scenario&lt;-as.character(rep(c(1:5),2))
+
+#Long form data for ggplot
+temp5&lt;-melt(temp4)
+temp5$variable&lt;-c(rep(&quot;batch&quot;,30),rep(&quot;chemo&quot;,30))</code></pre>
+<pre class="r"><code>#Relabel and reorder factors into scenario 1-5
+temp5$X&lt;-factor(temp5$X,levels=c(&quot;YIL155C&quot;,&quot;YGL209W&quot;,&quot;YAL038W&quot;,&quot;YHR083W&quot;,&quot;YAL047C&quot;),labels=c(&quot;DE Both&quot;,&quot;DE array&quot;,&quot;DE edgeR&quot;,&quot;Boring array&quot;,&quot;Boring edgeR&quot;))
+
+#Plot with 2 variable faceting
+ggplot(temp5, aes(x = variable, y = value)) +
+  geom_point(aes(color = variable),position=position_jitter(width = 0.1)) +
+  facet_grid(type~X, scales=&quot;free&quot;)</code></pre>
+<p><img src="Figs/unnamed-chunk-71-1.png" title="" alt="" width="672" /></p>
+</div>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
